@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, Command, _
+from odoo.addons.base.models.decimal_precision import DecimalPrecision
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
 from odoo.tools import float_compare, float_is_zero, date_utils, email_split, email_re, html_escape, is_html_empty
 from odoo.tools.misc import formatLang, format_date, get_lang
@@ -12,6 +13,7 @@ from contextlib import contextmanager
 from itertools import zip_longest
 from hashlib import sha256
 from json import dumps
+from unittest.mock import patch
 
 import ast
 import json
@@ -1023,20 +1025,19 @@ class AccountMove(models.Model):
             if payment_terms_lines:
                 # Retrieve account from previous payment terms lines in order to allow the user to set a custom one.
                 return payment_terms_lines[0].account_id
-            elif self.partner_id:
-                # Retrieve account from partner.
-                if self.is_sale_document(include_receipts=True):
-                    return self.partner_id.property_account_receivable_id
-                else:
-                    return self.partner_id.property_account_payable_id
             else:
-                # Search new account.
-                domain = [
-                    ('company_id', '=', self.company_id.id),
-                    ('internal_type', '=', 'receivable' if self.move_type in ('out_invoice', 'out_refund', 'out_receipt') else 'payable'),
-                    ('deprecated', '=', False),
-                ]
-                return self.env['account.account'].search(domain, limit=1)
+                accounts = {
+                    account_type: acc or self.env['account.account'].search([
+                        ('company_id', '=', self.company_id.id),
+                        ('internal_type', '=', account_type),
+                        ('deprecated', '=', False),
+                    ], limit=1)
+                    for acc, account_type in [(self.partner_id.property_account_payable_id, 'payable'), (self.partner_id.property_account_receivable_id, 'receivable')]}
+                account_map = (self.fiscal_position_id or self.env['account.fiscal.position']).map_accounts(accounts)
+                if self.is_sale_document(include_receipts=True):
+                    return account_map['receivable']
+                elif self.is_purchase_document(include_receipts=True):
+                    return account_map['payable']
 
         def _compute_payment_terms(self, date, total_balance, total_amount_currency):
             ''' Compute the payment terms.
@@ -1144,6 +1145,7 @@ class AccountMove(models.Model):
             expected_tax_rep_lines = set()
             current_tax_rep_lines = set()
             inv_recompute_all_taxes = recompute_all_taxes
+            has_taxes = False
             for line in invoice.line_ids:
                 if line.recompute_tax_line:
                     inv_recompute_all_taxes = True
@@ -1151,6 +1153,7 @@ class AccountMove(models.Model):
                 if line.tax_repartition_line_id:
                     current_tax_rep_lines.add(line.tax_repartition_line_id._origin)
                 elif line.tax_ids:
+                    has_taxes = True
                     if invoice.is_invoice(include_receipts=True):
                         is_refund = invoice.move_type in ('out_refund', 'in_refund')
                     else:
@@ -1171,12 +1174,13 @@ class AccountMove(models.Model):
             delta_tax_rep_lines = expected_tax_rep_lines - current_tax_rep_lines
 
             # Compute taxes.
-            if inv_recompute_all_taxes:
-                invoice._recompute_tax_lines()
-            elif recompute_tax_base_amount:
-                invoice._recompute_tax_lines(recompute_tax_base_amount=True)
-            elif delta_tax_rep_lines and not self._context.get('move_reverse_cancel'):
-                invoice._recompute_tax_lines(tax_rep_lines_to_recompute=delta_tax_rep_lines)
+            if has_taxes or current_tax_rep_lines:
+                if inv_recompute_all_taxes:
+                    invoice._recompute_tax_lines()
+                elif recompute_tax_base_amount:
+                    invoice._recompute_tax_lines(recompute_tax_base_amount=True)
+                elif delta_tax_rep_lines and not self._context.get('move_reverse_cancel'):
+                    invoice._recompute_tax_lines(tax_rep_lines_to_recompute=delta_tax_rep_lines)
 
             if invoice.is_invoice(include_receipts=True):
 
@@ -2196,7 +2200,7 @@ class AccountMove(models.Model):
         self._compute_tax_country_id() # We need to ensure this field has been computed, as we use it in our check
         for record in self:
             amls = record.line_ids
-            impacted_countries = amls.tax_ids.country_id | amls.tax_line_id.country_id | amls.tax_tag_ids.country_id
+            impacted_countries = amls.tax_ids.country_id | amls.tax_line_id.country_id
             if impacted_countries and impacted_countries != record.tax_country_id:
                 if record.fiscal_position_id and impacted_countries != record.fiscal_position_id.country_id:
                     raise ValidationError(_("This entry contains taxes that are not compatible with your fiscal position. Check the country set in fiscal position and in your tax configuration."))
@@ -2804,8 +2808,9 @@ class AccountMove(models.Model):
                 'credit': balance < 0.0 and -balance or 0.0,
             })
 
-            if not is_refund or self.tax_cash_basis_origin_move_id:
-                # We don't map tax repartition for non-refund operations, nor for cash basis entries.
+            if not is_refund or self.tax_cash_basis_origin_move_id or self._context.get('reverse_move_type'):
+                # We don't map tax repartition for non-refund operations, for cash basis entries,
+                # nor when reversing the move_type
                 # Indeed, cancelling a cash basis entry usually happens when unreconciling and invoice,
                 # in which case we always want the reverse entry to totally cancel the original one, keeping the same accounts,
                 # tags and repartition lines
@@ -3418,11 +3423,12 @@ class AccountMove(models.Model):
         }
 
     def action_switch_invoice_into_refund_credit_note(self):
-        if any(move.move_type not in ('in_invoice', 'out_invoice') for move in self):
-            raise ValidationError(_("This action isn't available for this document."))
-
         for move in self:
-            reversed_move = move._reverse_move_vals({}, False)
+            if move.posted_before:
+                raise ValidationError(_("You cannot switch the type of a posted document."))
+            if move.move_type == 'entry':
+                raise ValidationError(_("This action isn't available for this document."))
+            reversed_move = move.with_context(reverse_move_type=True)._reverse_move_vals({}, False)
             new_invoice_line_ids = []
             for cmd, virtualid, line_vals in reversed_move['line_ids']:
                 if not line_vals['exclude_from_invoice_tab']:
@@ -3436,8 +3442,11 @@ class AccountMove(models.Model):
                         'debit' : line_vals['credit'],
                         'credit' : line_vals['debit']
                     })
+            in_out, old_move_type = move.move_type.split('_')
+            new_move_type = f"{in_out}_{'invoice' if old_move_type == 'refund' else 'refund'}"
+            move.name = False
             move.write({
-                'move_type': move.move_type.replace('invoice', 'refund'),
+                'move_type': new_move_type,
                 'invoice_line_ids' : [(5, 0, 0)],
                 'partner_bank_id': False,
             })
@@ -3512,8 +3521,24 @@ class AccountMove(models.Model):
             ('date', '<=', fields.Date.context_today(self)),
             ('auto_post', '=', True),
         ])
-        for ids in self._cr.split_for_in_conditions(records.ids, size=1000):
-            self.browse(ids)._post()
+
+        for ids in self._cr.split_for_in_conditions(records.ids, size=100):
+            moves = self.browse(ids)
+            try:  # try posting in batch
+                with self.env.cr.savepoint():
+                    moves._post()
+            except UserError:  # if at least one move cannot be posted, handle moves one by one
+                for move in moves:
+                    try:
+                        with self.env.cr.savepoint():
+                            move._post()
+                    except UserError as e:
+                        move.to_check = True
+                        msg = _('The move could not be posted for the following reason: %(error_message)s', error_message=e)
+                        move.message_post(body=msg,
+                                          message_type='comment',
+                                          author_id=self.env.ref('base.partner_root').id)
+
             if not self.env.registry.in_test_mode():
                 self._cr.commit()
 
@@ -3586,6 +3611,22 @@ class AccountMove(models.Model):
 
         return rslt
 
+    @contextmanager
+    def _disable_discount_precision(self):
+        """Disable the user defined precision for discounts.
+
+        This is useful for importing documents coming from other softwares and providers.
+        The reasonning is that if the document that we are importing has a discount, it
+        shouldn't be rounded to the local settings.
+        """
+        original_precision_get = DecimalPrecision.precision_get
+        def precision_get(self, application):
+            if application == 'Discount':
+                return 100
+            return original_precision_get(self, application)
+        with patch('odoo.addons.base.models.decimal_precision.DecimalPrecision.precision_get', new=precision_get):
+            yield
+
     def _message_post_after_hook(self, new_message, message_values):
         # OVERRIDE
         # When posting a message, check the attachment to see if it's an invoice and update with the imported data.
@@ -3614,9 +3655,10 @@ class AccountMove(models.Model):
             # start with message_main_attachment_id, that way if OCR is installed, only that one will be parsed.
             # this is based on the fact that the ocr will be the last decoder.
             for attachment in attachments.sorted(lambda x: x != self.message_main_attachment_id):
-                invoice = decoder[1](attachment, self)
-                if invoice:
-                    return res
+                with self._disable_discount_precision():
+                    invoice = decoder[1](attachment, self)
+                    if invoice:
+                        return res
 
         return res
 
@@ -5541,7 +5583,7 @@ class AccountMoveLine(models.Model):
         # ==== Create entries for cash basis taxes ====
 
         is_cash_basis_needed = account.company_id.tax_exigibility and account.user_type_id.type in ('receivable', 'payable')
-        if is_cash_basis_needed and not self._context.get('move_reverse_cancel'):
+        if is_cash_basis_needed and not self._context.get('move_reverse_cancel') and not self._context.get('no_cash_basis'):
             tax_cash_basis_moves = partials._create_tax_cash_basis_moves()
             results['tax_cash_basis_moves'] = tax_cash_basis_moves
 

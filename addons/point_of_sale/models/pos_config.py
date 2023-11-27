@@ -343,14 +343,14 @@ class PosConfig(models.Model):
     @api.constrains('limited_partners_amount', 'limited_partners_loading')
     def _check_limited_partners(self):
         for rec in self:
-            if rec.limited_partners_loading and not self.limited_partners_amount:
+            if rec.limited_partners_loading and not rec.limited_partners_amount:
                 raise ValidationError(
                     _("Number of partners loaded can not be 0"))
 
     @api.constrains('limited_products_amount', 'limited_products_loading')
     def _check_limited_products(self):
         for rec in self:
-            if rec.limited_products_loading and not self.limited_products_amount:
+            if rec.limited_products_loading and not rec.limited_products_amount:
                 raise ValidationError(
                     _("Number of product loaded can not be 0"))
 
@@ -679,7 +679,7 @@ class PosConfig(models.Model):
             if not pos_journal:
                 pos_journal = self.env['account.journal'].create({
                     'type': 'general',
-                    'name': 'Point of Sale',
+                    'name': _('Point of Sale'),
                     'code': 'POSS',
                     'company_id': company.id,
                     'sequence': 20

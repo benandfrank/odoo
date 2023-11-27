@@ -475,7 +475,7 @@ class MrpProduction(models.Model):
                 production.state = 'progress'
             elif production.product_uom_id and not float_is_zero(production.qty_producing, precision_rounding=production.product_uom_id.rounding):
                 production.state = 'progress'
-            elif any(not float_is_zero(move.quantity_done, precision_rounding=move.product_uom.rounding or move.product_id.uom_id.rounding) for move in production.move_raw_ids):
+            elif any(not float_is_zero(move.quantity_done, precision_rounding=move.product_uom.rounding or move.product_id.uom_id.rounding) for move in production.move_raw_ids if move.product_id):
                 production.state = 'progress'
 
     @api.depends('state', 'move_raw_ids.state')
@@ -1167,17 +1167,9 @@ class MrpProduction(models.Model):
 
     def action_generate_serial(self):
         self.ensure_one()
-        if self.product_id.tracking == 'lot':
-            name = self.env['ir.sequence'].next_by_code('stock.lot.serial')
-            exist_lot = self.env['stock.production.lot'].search([
-                ('product_id', '=', self.product_id.id),
-                ('company_id', '=', self.company_id.id),
-                ('name', '=', name),
-            ], limit=1)
-            if exist_lot:
-                name = self.env['stock.production.lot']._get_next_serial(self.company_id, self.product_id)
-        else:
-            name = self.env['stock.production.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code('stock.lot.serial')
+        if self.product_id.tracking == 'none':
+            return
+        name = self.env['stock.production.lot']._get_new_serial(self.company_id, self.product_id)
         self.lot_producing_id = self.env['stock.production.lot'].create({
             'product_id': self.product_id.id,
             'company_id': self.company_id.id,

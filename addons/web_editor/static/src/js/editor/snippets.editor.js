@@ -1550,19 +1550,13 @@ var SnippetsMenu = Widget.extend({
                 this.options.wysiwyg.odooEditor.addEventListener('observerApply', () => {
                     $(this.options.wysiwyg.odooEditor.editable).trigger('content_changed');
                 });
-                this.options.wysiwyg.odooEditor.addEventListener('historyRevert', _.debounce(() => {
-                    this.trigger_up('widgets_start_request', {
-                        $target: this.options.wysiwyg.$editable,
-                        editableMode: true,
-                    });
-                }, 50));
             }
 
             // Trigger a resize event once entering edit mode as the snippets
             // menu will take part of the screen width (delayed because of
             // animation). (TODO wait for real animation end)
             setTimeout(() => {
-                this.$window.trigger('resize');
+                this.$window[0].dispatchEvent(new Event("resize"));
             }, 1000);
         });
     },
@@ -1842,7 +1836,7 @@ var SnippetsMenu = Widget.extend({
             $selectorSiblings = $(_.uniq(($selectorSiblings || $()).add($selectorChildren.children()).get()));
         }
 
-        var noDropZonesSelector = '[data-invisible="1"], .o_we_no_overlay, :not(:visible), :not(:o_editable)';
+        var noDropZonesSelector = '[data-invisible="1"], .o_we_no_overlay, :not(:visible)';
         if ($selectorSiblings) {
             $selectorSiblings.not(`.oe_drop_zone, .oe_drop_clone, ${noDropZonesSelector}`).each(function () {
                 var data;
@@ -2234,6 +2228,13 @@ var SnippetsMenu = Widget.extend({
     _computeSelectorFunctions: function (selector, exclude, target, noCheck, isChildren, excludeParent) {
         var self = this;
 
+        // TODO in master: FOR_DROP should be a param of the function.
+        const forDropID = 'FOR_DROP';
+        const forDrop = exclude && exclude.startsWith(forDropID);
+        if (forDrop) {
+            exclude = exclude.substring(forDropID.length);
+        }
+
         // The `:not(.o_editable_media)` part is handled outside of the selector
         // (see filterFunc).
         // Note: the `:not([contenteditable="true"])` part was there for that
@@ -2241,16 +2242,31 @@ var SnippetsMenu = Widget.extend({
         // It still make sense for potential editable areas though. Although it
         // should be reviewed if we are to handle more hierarchy of nodes being
         // editable despite their non editable environment.
-        exclude += `${exclude && ', '}.o_snippet_not_selectable, .o_not_editable :not([contenteditable="true"])`;
+        exclude += `${exclude && ', '}.o_snippet_not_selectable`;
 
         let filterFunc = function () {
-            if (!$(this).is(exclude)) {
+            // Exclude what it is asked to exclude.
+            if ($(this).is(exclude)) {
+                return false;
+            }
+            if (noCheck) {
+                // When noCheck is true, we only check the exclude.
                 return true;
             }
-            if (this.classList.contains('o_editable_media')) {
+            // `o_editable_media` bypasses the `o_not_editable` class except for
+            // drag & drop.
+            if (!forDrop && this.classList.contains('o_editable_media')) {
                 return shouldEditableMediaBeEditable(this);
             }
-            return false;
+            if (forDrop && !isChildren) {
+                // it's a drop-in.
+                return !$(this)
+                    .is('.o_not_editable :not([contenteditable="true"]), .o_not_editable');
+            }
+            if (isChildren) {
+                return !$(this).is('.o_not_editable *');
+            }
+            return !$(this).is('.o_not_editable :not([contenteditable="true"])');
         };
         if (target) {
             const oldFilter = filterFunc;
@@ -2395,8 +2411,8 @@ var SnippetsMenu = Widget.extend({
                 'base_target': target,
                 'selector': self._computeSelectorFunctions(selector, exclude, target, noCheck),
                 '$el': $style,
-                'drop-near': $style.data('drop-near') && self._computeSelectorFunctions($style.data('drop-near'), '', false, noCheck, true, excludeParent),
-                'drop-in': $style.data('drop-in') && self._computeSelectorFunctions($style.data('drop-in'), '', false, noCheck),
+                'drop-near': $style.data('drop-near') && self._computeSelectorFunctions($style.data('drop-near'), 'FOR_DROP', false, noCheck, true, excludeParent),
+                'drop-in': $style.data('drop-in') && self._computeSelectorFunctions($style.data('drop-in'), 'FOR_DROP', false, noCheck),
                 'data': _.extend({string: $style.attr('string')}, $style.data()),
             };
             self.templateOptions.push(option);
@@ -2552,7 +2568,7 @@ var SnippetsMenu = Widget.extend({
         }
 
         var def;
-        if (!$snippet[0].classList.contains('o_no_parent_editor')) {
+        if (this._allowParentsEditors($snippet)) {
             var $parent = globalSelector.closest($snippet.parent());
             if ($parent.length) {
                 def = this._createSnippetEditor($parent);
@@ -3094,6 +3110,13 @@ var SnippetsMenu = Widget.extend({
             tab: this.tabs.OPTIONS,
             forceEmptyTab: true,
         });
+    },
+    /**
+     * @private
+     */
+    _allowParentsEditors($snippet) {
+        return !this.options.enableTranslation
+            && !$snippet[0].classList.contains("o_no_parent_editor");
     },
 
     //--------------------------------------------------------------------------

@@ -55,11 +55,15 @@ var MassMailingFieldHtml = FieldHtml.extend({
         }
         var fieldName = this.nodeOptions['inline-field'];
 
+        var $editable = this.wysiwyg.getEditable();
+        if (this._$codeview && !this._$codeview.hasClass('d-none')) {
+            $editable.html(self.value);
+        }
+
         if (this.$content.find('.o_basic_theme').length) {
             this.$content.find('*').css('font-family', '');
         }
 
-        var $editable = this.wysiwyg.getEditable();
         await this.wysiwyg.cleanForSave();
         return this.wysiwyg.saveModifiedImages(this.$content).then(async function () {
             self._isDirty = self.wysiwyg.isDirty();

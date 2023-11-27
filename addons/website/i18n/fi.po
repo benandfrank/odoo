@@ -17,7 +17,6 @@
 # Johanna Valkonen <miujohanna@gmail.com>, 2021
 # Simo Suurla <simo@suurla.fi>, 2021
 # Eino Mäkitalo <eino.makitalo@netitbe.fi>, 2021
-# Teija Hölttä <teija.holtta@gmail.com>, 2021
 # Tommi Rintala <tommi.rintala@gmail.com>, 2021
 # Kimmo Lehtonen <leban@netzionale.com>, 2021
 # Tuomas Lyyra <tuomas.lyyra@legenda.fi>, 2021
@@ -32,8 +31,9 @@
 # Kim Asplund <kim.asplund@gmail.com>, 2022
 # Miika Nissi <miika.nissi@tawasta.fi>, 2022
 # LINUX-SAUNA, 2022
-# Martin Trigaux, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023
+# Teija Hölttä <teija.holtta@gmail.com>, 2023
+# Martin Trigaux, 2023
 # Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
@@ -7755,6 +7755,13 @@ msgid "Pay"
 msgstr "Maksa"
 
 #. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Phone Number"
+msgstr "Puhelinnumero"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_thumbnails
 msgid "Phones"
 msgstr "Puhelimet"
@@ -7865,7 +7872,7 @@ msgstr "Esiasetus"
 #: code:addons/website/static/src/xml/website.xml:0
 #, python-format
 msgid "Press"
-msgstr ""
+msgstr "Paina"
 
 #. module: website
 #. openerp-web
@@ -9234,6 +9241,13 @@ msgstr "Muotoilu"
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Sub Menus"
 msgstr "Alivalikot"
+
+#. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Subject"
+msgstr "Aihe"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.contactus
@@ -11429,6 +11443,13 @@ msgid "Your Client ID:"
 msgstr "Client ID:"
 
 #. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Your Company"
+msgstr "Oma yritys"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_dynamic_snippet_template
 msgid ""
 "Your Dynamic Snippet will be displayed here... This message is displayed "
@@ -11439,10 +11460,31 @@ msgstr ""
 
 #. module: website
 #. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Your Email"
+msgstr "Sähköpostisi"
+
+#. module: website
+#. openerp-web
 #: code:addons/website/static/src/xml/website.backend.xml:0
 #, python-format
 msgid "Your Measurement ID:"
 msgstr ""
+
+#. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Your Name"
+msgstr "Nimesi"
+
+#. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Your Question"
+msgstr "Oma kysymys"
 
 #. module: website
 #. openerp-web

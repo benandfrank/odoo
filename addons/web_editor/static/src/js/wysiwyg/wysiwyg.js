@@ -83,6 +83,7 @@ const Wysiwyg = Widget.extend({
         this.colorpickers = {};
         this._onDocumentMousedown = this._onDocumentMousedown.bind(this);
         this._onBlur = this._onBlur.bind(this);
+        this._onScroll = this._onScroll.bind(this);
         this.customizableLinksSelector = 'a'
             + ':not([data-toggle="tab"])'
             + ':not([data-toggle="collapse"])'
@@ -155,6 +156,12 @@ const Wysiwyg = Widget.extend({
             allowInlineAtRoot: this.options.allowInlineAtRoot,
             getYoutubeVideoElement: getYoutubeVideoElement,
             getContextFromParentRect: options.getContextFromParentRect,
+            getScrollContainerRect: () => {
+                if (!this.scrollContainer || !this.scrollContainer.getBoundingClientRect) {
+                    this.scrollContainer = document.querySelector('.o_action_manager');
+                }
+                return this.scrollContainer.getBoundingClientRect();
+            },
             getPowerboxElement: () => {
                 const selection = (this.options.document || document).getSelection();
                 if (selection.isCollapsed && selection.rangeCount) {
@@ -366,7 +373,10 @@ const Wysiwyg = Widget.extend({
                         $target.data('popover-widget-initialized', this.linkPopover);
                     })();
                 }
-                $target.focus();
+                // Setting the focus on the closest contenteditable element
+                // resets the selection inside that element if no selection
+                // exists.
+                $target.closest('[contenteditable=true]').focus();
                 if ($target.closest('#wrapwrap, .iframe-editor-wrapper').length && this.snippetsMenu) {
                     this.toggleLinkTools({
                         forceOpen: true,
@@ -593,7 +603,7 @@ const Wysiwyg = Widget.extend({
             const clientsInfos = Object.values(this.ptp.clientsInfos);
             const couldBeDisconnected =
                 Boolean(clientsInfos.length) &&
-                clientsInfos.every((x) => PTP_CLIENT_DISCONNECTED_STATES.includes(x.peerConnection.connectionState));
+                clientsInfos.every((x) => PTP_CLIENT_DISCONNECTED_STATES.includes(x.peerConnection && x.peerConnection.connectionState));
 
             if (couldBeDisconnected) {
                 this._offlineTimeout = setTimeout(() => {
@@ -704,6 +714,7 @@ const Wysiwyg = Widget.extend({
             window.removeEventListener('offline', this._checkConnectionChange);
         }
         window.removeEventListener('beforeunload', this._onBeforeUnload);
+        document.removeEventListener('scroll', this._onScroll, true);
         this._super();
     },
     /**
@@ -1193,7 +1204,6 @@ const Wysiwyg = Widget.extend({
                 this.odooEditor.historyUnpauseSteps();
                 this.odooEditor.historyStep();
                 link = linkWidget.$link[0];
-                this.odooEditor.setContenteditableLink(linkWidget.$link[0]);
                 setSelection(link, 0, link, link.childNodes.length, false);
                 // Focus the link after the dialog element is removed because
                 // if the dialog element is still in the DOM at the time of
@@ -1495,18 +1505,10 @@ const Wysiwyg = Widget.extend({
         if ($colorpickerGroup.length) {
             this._createPalette();
         }
-        // we need the Timeout to be sure the editable content is loaded
-        // before calculating the scrollParent() element.
-        setTimeout(() => {
-            const scrollableContainer = this.$el.scrollParent();
-            if (!options.snippets && scrollableContainer.length) {
-                this.odooEditor.addDomListener(
-                    scrollableContainer[0],
-                    'scroll',
-                    this.odooEditor.updateToolbarPosition.bind(this.odooEditor),
-                );
-            }
-        }, 0);
+        if (!options.snippets) {
+            // Scroll event does not bubble.
+            document.addEventListener('scroll', this._onScroll, true);
+        }
     },
     /**
      * @private
@@ -1620,9 +1622,7 @@ const Wysiwyg = Widget.extend({
         }
     },
     _processAndApplyColor: function (eventName, color) {
-        if (!color) {
-            color = 'inherit';
-        } else if (!ColorpickerWidget.isCSSColor(color) && !weUtils.isColorGradient(color)) {
+        if (color && (!ColorpickerWidget.isCSSColor(color) && !weUtils.isColorGradient(color))) {
             color = (eventName === "foreColor" ? 'text-' : 'bg-') + color;
         }
         const fonts = this.odooEditor.execCommand('applyColor', color, eventName === 'foreColor' ? 'color' : 'backgroundColor', this.lastMediaClicked);
@@ -1686,7 +1686,7 @@ const Wysiwyg = Widget.extend({
                     closestElement(selection.anchorNode, containerSelector)) ||
                 // In case a suitable container could not be found then the
                 // selection is restricted inside the editable area.
-                this.$editable.find(containerSelector);
+                this.$editable.find(containerSelector)[0];
             if (container) {
                 const range = document.createRange();
                 range.selectNodeContents(container);
@@ -2167,6 +2167,12 @@ const Wysiwyg = Widget.extend({
             this.trigger_up('wysiwyg_blur');
         }
     },
+    _onScroll: function(ev) {
+        if (ev.target.contains(this.$editable[0])) {
+            this.scrollContainer = ev.target;
+            this.odooEditor.updateToolbarPosition();
+        }
+    },
     _signalOffline: function () {
         if (!this._isOnline) {
             return;
@@ -2212,7 +2218,7 @@ const Wysiwyg = Widget.extend({
             this.preSavePromiseResolve();
             resetPreSavePromise();
         } catch (e) {
-            this.preSavePromiseReject(e);
+            this.preSavePromiseReject && this.preSavePromiseReject(e);
             resetPreSavePromise();
         }
     },

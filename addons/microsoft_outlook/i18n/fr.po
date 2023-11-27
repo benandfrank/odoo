@@ -5,6 +5,7 @@
 # Translators:
 # Khadija Mbazaa <khadija.mbazaa@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Wil Odoo, 2023
 # Jolien De Paepe, 2023
 # 
 msgid ""
@@ -168,6 +169,18 @@ msgstr "Veuillez configurer vos données d'authentification Outlook."
 #: code:addons/microsoft_outlook/models/ir_mail_server.py:0
 #, python-format
 msgid ""
+"Please fill the \"Username\" field with your Outlook/Office365 username "
+"(your email address). This should be the same account as the one used for "
+"the Outlook OAuthentication Token."
+msgstr ""
+"Veuillez complétez votre nom d'utilisateur Outlook/Office365 (votre adresse "
+"email) dans le champ \"Nom d'utilisateur\". Ceci devrait être le même compte"
+" que celui utilisé pour le jeton OAuthentification Outlook."
+
+#. module: microsoft_outlook
+#: code:addons/microsoft_outlook/models/ir_mail_server.py:0
+#, python-format
+msgid ""
 "Please leave the password field empty for Outlook mail server %r. The OAuth "
 "process does not require it"
 msgstr ""
@@ -185,7 +198,7 @@ msgstr ""
 #. module: microsoft_outlook
 #: model_terms:ir.ui.view,arch_db:microsoft_outlook.res_config_settings_view_form
 msgid "Send and receive email with your Outlook account."
-msgstr "Envoyez et recevez des emails avec votre compte Outlook."
+msgstr "Envoyer et recevoir des emails via votre compte Outlook."
 
 #. module: microsoft_outlook
 #: model_terms:ir.ui.view,arch_db:microsoft_outlook.ir_mail_server_view_form

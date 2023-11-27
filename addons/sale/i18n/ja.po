@@ -1256,7 +1256,7 @@ msgstr "カスタマイズ"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.onboarding_quotation_layout_step
 msgid "Customize the look of your quotations."
-msgstr "見積の外観をカスタマイズ"
+msgstr "見積書デザインをカスタマイズ"
 
 #. module: sale
 #. openerp-web
@@ -2858,7 +2858,7 @@ msgstr "プロダクト"
 #. module: sale
 #: model:ir.model,name:sale.model_report_sale_report_saleproforma
 msgid "Proforma Report"
-msgstr "プロフォーマレポート"
+msgstr "見積送状レポート"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_line_tree

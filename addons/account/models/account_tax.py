@@ -18,7 +18,7 @@ TYPE_TAX_USE = [
 class AccountTaxGroup(models.Model):
     _name = 'account.tax.group'
     _description = 'Tax Group'
-    _order = 'sequence asc'
+    _order = 'sequence asc, id'
 
     name = fields.Char(required=True, translate=True)
     sequence = fields.Integer(default=10)
@@ -199,7 +199,11 @@ class AccountTax(models.Model):
         for tax in self:
             if not tax._check_m2m_recursion('children_tax_ids'):
                 raise ValidationError(_("Recursion found for tax '%s'.") % (tax.name,))
-            if any(child.type_tax_use not in ('none', tax.type_tax_use) or child.tax_scope != tax.tax_scope for child in tax.children_tax_ids):
+            if any(
+                child.type_tax_use not in ('none', tax.type_tax_use)
+                or child.tax_scope not in (tax.tax_scope, False)
+                for child in tax.children_tax_ids
+            ):
                 raise ValidationError(_('The application scope of taxes in a group must be either the same as the group or left empty.'))
 
     @api.constrains('company_id')
@@ -720,6 +724,14 @@ class AccountTaxRepartitionLine(models.Model):
         help="The order in which distribution lines are displayed and matched. For refunds to work properly, invoice distribution lines should be arranged in the same order as the credit note distribution lines they correspond to.")
     use_in_tax_closing = fields.Boolean(string="Tax Closing Entry", default=True)
 
+    tag_ids_domain = fields.Binary(string="tag domain", help="Dynamic domain used for the tag that can be set on tax", compute="_compute_tag_ids_domain")
+
+    @api.depends('company_id.multi_vat_foreign_country_ids', 'company_id.account_fiscal_country_id')
+    def _compute_tag_ids_domain(self):
+        for rep_line in self:
+            allowed_country_ids = (False, rep_line.company_id.account_fiscal_country_id.id, *rep_line.company_id.multi_vat_foreign_country_ids.ids,)
+            rep_line.tag_ids_domain = [('applicability', '=', 'taxes'), ('country_id', 'in', allowed_country_ids)]
+
     @api.onchange('account_id', 'repartition_type')
     def _on_change_account_id(self):
         if not self.account_id or self.repartition_type == 'base':
@@ -732,12 +744,6 @@ class AccountTaxRepartitionLine(models.Model):
         for record in self:
             if record.invoice_tax_id and record.refund_tax_id:
                 raise ValidationError(_("Tax distribution lines should apply to either invoices or refunds, not both at the same time. invoice_tax_id and refund_tax_id should not be set together."))
-
-    @api.constrains('invoice_tax_id', 'refund_tax_id', 'tag_ids')
-    def validate_tags_country(self):
-        for record in self:
-            if record.tag_ids.country_id and record.tax_id.country_id != record.tag_ids.country_id:
-                raise ValidationError(_("A tax should only use tags from its country. You should use another tax and a fiscal position if you wish to uses the tags from foreign tax reports."))
 
     @api.depends('factor_percent')
     def _compute_factor(self):

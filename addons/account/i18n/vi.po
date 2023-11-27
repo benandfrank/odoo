@@ -11,9 +11,9 @@
 # Thinh Doan <thinh.t.doan@gmail.com>, 2022
 # Thin Tran <trvathin@gmail.com>, 2022
 # Duy BQ <duybq86@gmail.com>, 2022
-# Thi Huong Nguyen, 2023
 # Nancy Momoland <thanh.np2502@gmail.com>, 2023
 # Martin Trigaux, 2023
+# Thi Huong Nguyen, 2023
 # 
 msgid ""
 msgstr ""
@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-18 09:52+0000\n"
 "PO-Revision-Date: 2021-09-14 12:18+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Thi Huong Nguyen, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12551,8 +12551,8 @@ msgstr "Tài khoản tạm thời"
 
 #. module: account
 #: model:ir.actions.server,name:account.action_move_switch_invoice_to_credit_note
-msgid "Switch into refund/credit note"
-msgstr "Chuyển đổi thành khoản hoàn tiền/giấy báo có"
+msgid "Switch into invoice/credit note"
+msgstr "Chuyển đổi thành hoá đơn/giấy báo có"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account_tag__name
@@ -14117,6 +14117,13 @@ msgid "The method used to determine if this line should be carried over."
 msgstr ""
 "Phương pháp được sử dụng để xác định xem dòng này có nên được chuyển tiếp "
 "hay không."
+
+#. module: account
+#: code:addons/account/models/account_move.py:0
+#, python-format
+msgid ""
+"The move could not be posted for the following reason: %(error_message)s"
+msgstr "Không thể vào sổ dịch chuyển vì lý do sau: %(error_message)s"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__move_id
@@ -15753,7 +15760,7 @@ msgstr "Cảnh báo cho %s"
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "Warning for Cash Rounding Method: %s"
-msgstr ""
+msgstr "Cảnh báo về phương pháp làm tròn tiền mặt: %s"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.partner_view_buttons
@@ -16489,6 +16496,12 @@ msgstr ""
 "chưa thực hiện."
 
 #. module: account
+#: code:addons/account/models/account_account.py:0
+#, python-format
+msgid "You cannot switch the type of a posted document."
+msgstr "Bạn không thể chuyển đổi loại chứng từ đã vào sổ."
+
+#. module: account
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "You cannot use a deprecated account."
@@ -16578,7 +16591,7 @@ msgstr ""
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "You must specify the Profit Account (company dependent)"
-msgstr ""
+msgstr "Bạn phải xác định Tài khoản ghi lãi (phụ thuộc vào công ty)"
 
 #. module: account
 #: code:addons/account/models/account_move.py:0

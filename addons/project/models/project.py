@@ -187,30 +187,32 @@ class Project(models.Model):
     _check_company_auto = True
 
     def _compute_attached_docs_count(self):
-        self.env.cr.execute(
-            """
-            WITH docs AS (
-                 SELECT res_id as id, count(*) as count
-                   FROM ir_attachment
-                  WHERE res_model = 'project.project'
-                    AND res_id IN %(project_ids)s
-               GROUP BY res_id
+        docs_count = {}
+        if self.ids:
+            self.env.cr.execute(
+                """
+                WITH docs AS (
+                     SELECT res_id as id, count(*) as count
+                       FROM ir_attachment
+                      WHERE res_model = 'project.project'
+                        AND res_id IN %(project_ids)s
+                   GROUP BY res_id
 
-              UNION ALL
+                  UNION ALL
 
-                 SELECT t.project_id as id, count(*) as count
-                   FROM ir_attachment a
-                   JOIN project_task t ON a.res_model = 'project.task' AND a.res_id = t.id
-                  WHERE t.project_id IN %(project_ids)s
-               GROUP BY t.project_id
+                     SELECT t.project_id as id, count(*) as count
+                       FROM ir_attachment a
+                       JOIN project_task t ON a.res_model = 'project.task' AND a.res_id = t.id
+                      WHERE t.project_id IN %(project_ids)s
+                   GROUP BY t.project_id
+                )
+                SELECT id, sum(count)
+                  FROM docs
+              GROUP BY id
+                """,
+                {"project_ids": tuple(self.ids)}
             )
-            SELECT id, sum(count)
-              FROM docs
-          GROUP BY id
-            """,
-            {"project_ids": tuple(self.ids)}
-        )
-        docs_count = dict(self.env.cr.fetchall())
+            docs_count = dict(self.env.cr.fetchall())
         for project in self:
             project.doc_count = docs_count.get(project.id, 0)
 
@@ -2122,12 +2124,18 @@ class Task(models.Model):
             # we consider that posting a message with a specified recipient (not a follower, a specific one)
             # on a document without customer means that it was created through the chatter using
             # suggested recipients. This heuristic allows to avoid ugly hacks in JS.
-            new_partner = message.partner_ids.filtered(lambda partner: partner.email == self.email_from)
+            email_normalized = tools.email_normalize(self.email_from)
+            new_partner = message.partner_ids.filtered(
+                lambda partner: partner.email == self.email_from or (email_normalized and partner.email_normalized == email_normalized)
+            )
             if new_partner:
+                if new_partner[0].email_normalized:
+                    email_domain = ('email_from', 'in', [new_partner[0].email, new_partner[0].email_normalized])
+                else:
+                    email_domain = ('email_from', '=', new_partner[0].email)
                 self.search([
-                    ('partner_id', '=', False),
-                    ('email_from', '=', new_partner.email),
-                    ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
+                    ('partner_id', '=', False), email_domain, ('stage_id.fold', '=', False)
+                ]).write({'partner_id': new_partner[0].id})
         return super(Task, self)._message_post_after_hook(message, msg_vals)
 
     def action_assign_to_me(self):

@@ -47,8 +47,14 @@ class AccountMove(models.Model):
                 data.append((_("Invoicing Address:"), record.partner_id))
             elif record.partner_shipping_id == record.partner_id:
                 data.append((_("Invoicing and Shipping Address:"), record.partner_shipping_id))
-            elif record.move_type in ("in_invoice", "in_refund"):
+            elif record.move_type in ("in_invoice", "in_refund") or not record.partner_shipping_id:
                 data.append((_("Invoicing and Shipping Address:"), record.partner_id))
             else:
                 data.append((_("Shipping Address:"), record.partner_shipping_id))
                 data.append((_("Invoicing Address:"), record.partner_id))
+
+    def check_field_access_rights(self, operation, field_names):
+        field_names = super().check_field_access_rights(operation, field_names)
+        return [field_name for field_name in field_names if field_name not in {
+            'l10n_de_addresses',
+        }]

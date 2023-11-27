@@ -1162,6 +1162,10 @@ class BaseModel(metaclass=MetaModel):
                     # Failed to write, log to messages, rollback savepoint (to
                     # avoid broken transaction) and keep going
                     errors += 1
+                except UserError as e:
+                    info = rec_data['info']
+                    messages.append(dict(info, type='error', message=str(e)))
+                    errors += 1
                 except Exception as e:
                     _logger.debug("Error while loading record", exc_info=True)
                     info = rec_data['info']
@@ -2232,7 +2236,8 @@ class BaseModel(metaclass=MetaModel):
             order_split = order_part.split()
             order_field = order_split[0]
             if order_field == 'id' or order_field in groupby_fields:
-                if self._fields[order_field.split(':')[0]].type == 'many2one':
+                field = self._fields[order_field.split(':')[0]]
+                if field.type == 'many2one' and self.env[field.comodel_name]._order != 'id':
                     order_clause = self._generate_order_by(order_part, query).replace('ORDER BY ', '')
                     if order_clause:
                         orderby_terms.append(order_clause)
@@ -2880,10 +2885,9 @@ class BaseModel(metaclass=MetaModel):
 
         for (key, definition, message) in self._sql_constraints:
             conname = '%s_%s' % (self._table, key)
-            if len(conname) > 63:
-                _logger.info("Constraint name %r has more than 63 characters", conname)
-
             current_definition = tools.constraint_definition(cr, self._table, conname)
+            if len(conname) > 63 and not current_definition:
+                _logger.info("Constraint name %r has more than 63 characters", conname)
             if current_definition == definition:
                 continue
 
@@ -4427,6 +4431,17 @@ Fields:
                 if data.get('xml_id') and not data['xml_id'].startswith(prefix):
                     _logger.warning("Creating record %s in module %s.", data['xml_id'], module)
 
+        if self.env.context.get('import_file'):
+            existing_modules = self.env['ir.module.module'].sudo().search([]).mapped('name')
+            for data in to_create:
+                xml_id = data.get('xml_id')
+                if xml_id:
+                    module_name, sep, record_id = xml_id.partition('.')
+                    if sep and module_name in existing_modules:
+                        raise UserError(
+                            _("The record %(xml_id)s has the module prefix %(module_name)s. This is the part before the '.' in the external id. Because the prefix refers to an existing module, the record would be deleted when the module is upgraded. Use either no prefix and no dot or a prefix that isn't an existing module. For example, __import__, resulting in the external id __import__.%(record_id)s.",
+                              xml_id=xml_id, module_name=module_name, record_id=record_id))
+
         # create records
         records = self._load_records_create([data['values'] for data in to_create])
         for data, record in zip(to_create, records):
@@ -4547,6 +4562,9 @@ Fields:
         # figure out the applicable order_by for the m2o
         dest_model = self.env[field.comodel_name]
         m2o_order = dest_model._order
+        if m2o_order == 'id':
+            order_direction = 'DESC' if reverse_direction else ''
+            return ['"%s"."%s" %s' % (alias, order_field, order_direction)]
         if not regex_order.match(m2o_order):
             # _order is complex, can't use it here, so we default to _rec_name
             m2o_order = dest_model._rec_name

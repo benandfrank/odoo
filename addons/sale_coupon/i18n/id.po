@@ -402,7 +402,7 @@ msgstr ""
 #: code:addons/sale_coupon/wizard/sale_coupon_apply_code.py:0
 #, python-format
 msgid "This coupon is invalid (%s)."
-msgstr ""
+msgstr "Kupon ini tidak valid (%s)."
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/coupon_program.py:0
@@ -449,7 +449,7 @@ msgstr ""
 #. module: sale_coupon
 #: model:mail.template,subject:sale_coupon.mail_template_sale_coupon
 msgid "Your reward coupon from {{ object.program_id.company_id.name }} "
-msgstr ""
+msgstr "Kupon reward Anda dari {{ object.program_id.company_id.name }} "
 
 #. module: sale_coupon
 #: model:mail.template,name:sale_coupon.mail_template_sale_coupon

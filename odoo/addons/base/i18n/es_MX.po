@@ -6,9 +6,11 @@
 # Martin Trigaux, 2021
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Aimée Mendoza Sánchez, 2023
+# Lucia Pacheco, 2023
+# Wil Odoo, 2023
+# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023
 # Fernanda Alvarez, 2023
 # Iran Villalobos López, 2023
-# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-24 09:03+0000\n"
 "PO-Revision-Date: 2021-09-14 12:18+0000\n"
-"Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023\n"
+"Last-Translator: Iran Villalobos López, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -921,7 +923,8 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Convierte tickets del servicio de ayuda en tareas de servicio de campo."
+"        Convierte tickets del servicio de asistencia en tareas de servicio externo.\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_product_unspsc
@@ -1148,7 +1151,7 @@ msgid ""
 "        Make calls using a VOIP system"
 msgstr ""
 "\n"
-"        Hacer llamadas usando el sistema de VOIP"
+"        Haga llamadas mediante el sistema VOIP"
 
 #. module: base
 #: model:ir.module.module,description:base.module_mail_group
@@ -5311,16 +5314,16 @@ msgstr ""
 "\n"
 "Características:\n"
 "\n"
-"    - Procesar tickets por diferentes etapas para resolverlos.\n"
-"    - Agregue prioridades, tipos, descripciones y etiquetas para definir sus boletos.\n"
-"    - Utiliza la charla para comunicar información adicional y hacer ping a los compañeros de trabajo en los tickets.\n"
-"    - Disfrute del uso de un panel de control adaptado y una vista kanban fácil de usar para manejar sus tickets.\n"
-"    - Realice un análisis en profundidad de sus tickets a través de la vista dinámica en el menú de informes.\n"
-"    - Crea un equipo y define sus miembros, usa un método de asignación automática si lo deseas.\n"
-"    - Utiliza un alias de correo para crear tickets automáticamente y comunicarse con sus clientes.\n"
-"    - Agregue fechas límite del Acuerdo de nivel de servicio automáticamente a sus boletos.\n"
-"    - Obtén comentarios de los clientes mediante el uso de calificaciones.\n"
-"    - Instala funciones adicionales fácilmente usando la vista de formulario de su equipo.\n"
+"    - Procese tickets por diferentes etapas para resolverlos.\n"
+"    - Agregue prioridades, tipos, descripciones y etiquetas para definir sus tickets.\n"
+"    - Utilice el chatter para comunicar información adicional y etiquetar a los compañeros de trabajo en los tickets.\n"
+"    - Disfrute del uso de un tablero adaptado y una vista kanban fácil de usar para gestionar sus tickets.\n"
+"    - Realice un análisis en profundidad de sus tickets a través de la vista dinámica en el menú de reportes.\n"
+"    - Cree un equipo y define sus miembros, use un método de asignación automática si lo desea.\n"
+"    - Utilice un alias de correo para crear tickets automáticamente y comunicarse con sus clientes.\n"
+"    - Agregue fechas límite del Acuerdo de nivel de servicio automáticamente a sus tickets.\n"
+"    - Obtenga comentarios de los clientes mediante el uso de calificaciones.\n"
+"    - Instale funciones adicionales fácilmente usando la vista de formulario de su equipo.\n"
 "\n"
 "    "
 
@@ -8478,10 +8481,10 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Este módulo añade un acceso directo a uno o varios casos de oportunidad en el CRM.\n"
+"Este módulo agrega un acceso directo a uno o varios casos de oportunidad en el CRM.\n"
 "===========================================================================\n"
 "\n"
-"Este acceso te permite general una orden de renta en el caso seleccionado.\n"
+"Este acceso le permite generar una orden de alquiler en el caso seleccionado.\n"
 "    "
 
 #. module: base
@@ -8500,14 +8503,14 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Este módulo añade un atajo a uno o varios casos de oportunidades en el sistema CRM.\n"
+"Este módulo agrega un atajo a uno o varios casos de oportunidades en el sistema CRM.\n"
 "===========================================================================\n"
 "\n"
-"Este atajo permite generar un pedido basado en un caso seleccionado.\n"
-"Si hay varios casos diferentes abiertos (una lista), se genera un pedido por caso.\n"
-"El caso se cierra y se vincula al pedido generado.\n"
+"Este atajo le permite generar una orden de ventas según el caso seleccionado.\n"
+"Si hay varios casos diferentes abiertos (una lista), genera una orden por caso.\n"
+"El caso se cierra y se vincula a la orden de venta generada.\n"
 "\n"
-"Te sugerimos que instales este módulo si instalaste tanto el módulo de compras\n"
+"Le sugerimos que instale este módulo si instaló tanto el módulo de compras\n"
 "como el de CRM."
 
 #. module: base
@@ -8554,12 +8557,12 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Este módulo agrega características genéricas para registrar una base de datos de Odoo en el proxy responsable por recibir la información (por medio de peticiones de servicios web).\n"
-"- Un edi_proxy_user tine una identificación única en un formato específico (por ejemplo, el vat para Peppol) que \n"
+"Este módulo agrega características genéricas para registrar una base de datos de Odoo en el proxy responsable de recibir la información (por medio de peticiones de servicios web).\n"
+"- Un edi_proxy_user tiene una identificación única en un formato específico (por ejemplo, el IVA para Peppol) que \n"
 "permite identificarlo al recibir un documento que se dirige a él. Se vincula con una empresa específica en una base\n"
 "de datos de Odoo.\n"
-"- Las características de cifrado permite decodificar toda la información del usuario al recibirlo de un proxy.\n"
-"- La autenticación ofrece un nivel adicional de seguridad para evitar la personificación en caso de que alguien obtenga acceso a la date de baso de un usuario.\n"
+"- Las características de cifrado permiten decodificar toda la información del usuario al recibirlo de un proxy.\n"
+"- La autenticación ofrece un nivel adicional de seguridad para evitar la personificación en caso de que alguien obtenga acceso a la base de datos de un usuario.\n"
 "    "
 
 #. module: base
@@ -8658,7 +8661,7 @@ msgstr ""
 "Este módulo tiene como objetivo gestionar la asistencia de los empleados.\n"
 "==================================================\n"
 "\n"
-"Mantiene la cuenta de las asistencias de los empleados dependiendo de las acciones (Check in / Check out) que realicen."
+"Lleva el número de asistencias de los empleados según las acciones que realicen (como registrar su entrada o salida)."
 
 #. module: base
 #: model:ir.module.module,description:base.module_pos_hr
@@ -8773,20 +8776,20 @@ msgid ""
 msgstr ""
 "\n"
 "Este módulo permite imprimir sus pagos en papel de cheque preimpreso.\n"
-"Puede configurar la salida (diseño, información de stubs, etc.) en la configuración de la empresa y administrar la\n"
+"Puede configurar el resultado (diseño, información del talonario, etc.) en los ajustes de la empresa y administrar la\n"
 "numeración de cheques (si utiliza cheques preimpresos sin números) en la configuración del diario.\n"
 "\n"
 "Formatos admitidos\n"
 "-----------------\n"
 "Este módulo admite los tres formatos de cheques más comunes y funcionará de inmediato con los cheques vinculados de checkdepot.net.\n"
 "\n"
-"Vea todos los cheques en: https://www.checkdepot.net/checks/laser/Odoo.htm\n"
+"Consulte todos los cheques en: https://www.checkdepot.net/checks/laser/Odoo.htm\n"
 "\n"
 "Puede elegir entre:\n"
 "\n"
-"- Verifique en la parte superior: estándar Quicken / QuickBooks (https://www.checkdepot.net/checks/checkorder/laser_topcheck.htm)\n"
-"- Verificación en el medio: estándar Peachtree (https://www.checkdepot.net/checks/checkorder/laser_middlecheck.htm)\n"
-"- Verifique en la parte inferior: estándar ADP (https://www.checkdepot.net/checks/checkorder/laser_bottomcheck.htm)\n"
+"- Cheque en la parte superior: estándar Quicken / QuickBooks (https://www.checkdepot.net/checks/checkorder/laser_topcheck.htm)\n"
+"- Cheque en el medio: estándar Peachtree (https://www.checkdepot.net/checks/checkorder/laser_middlecheck.htm)\n"
+"- Cheque en la parte inferior: estándar ADP (https://www.checkdepot.net/checks/checkorder/laser_bottomcheck.htm)\n"
 "    "
 
 #. module: base
@@ -8806,16 +8809,16 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Este módulo te permite imprimir tus pagos en cheques preimpresos. Puedes\n"
-"configurar la salida (diseño, apéndices, formato de papel, etc.) en la configuración de la empresa y administrar los\n"
-"cheques numerados (si utiliza cheques sin numeración) en la configuración del diario.\n"
-"Según la Asociación Canadiense de Pagos (https://www.payments.ca/sites/default/files/standard_006_complete_0.pdf)\n"
+"Este módulo permite imprimir sus pagos en cheques preimpresos. \n"
+"Puede configurar el resultado (diseño, talones, formato de papel, etc.) en los ajustes de la empresa y gestionar la\n"
+"numeración de los cheques (si utiliza cheques preimpresos sin números) en los ajustes del diario.\n"
+"Conforme a la Asociación Canadiense de Pago (https://www.payments.ca/sites/default/files/standard_006_complete_0.pdf)\n"
 "\n"
 "Formatos compatibles\n"
 "----------------------------\n"
-"- Cheque en la parte superior : Quicken / QuickBooks standard\n"
-"- Cheque en la parte media: Peachtree standard\n"
-"- Cheque en la parte inferior: ADP standard\n"
+"- Cheque en la parte superior: Quicken / QuickBooks estándar\n"
+"- Cheque en la parte media: Peachtree estándar \n"
+"- Cheque en la parte inferior: ADP estándar\n"
 "    "
 
 #. module: base
@@ -8838,18 +8841,18 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Este módulo permite publicar sus revendedores / socios en su sitio web y enviarles oportunidades / clientes potenciales entrantes.\n"
+"Este módulo permite que publique a sus distribuidores y socios en su sitio web y enviarles leads y oportunidades entrantes.\n"
 "\n"
 "\n"
-"** Publica un socio **\n"
+"**Publique un socio**\n"
 "\n"
-"Para publicar un socio, establezca un * Nivel * en su formulario de contacto (en la sección Asignación de socio) y haga clic en el botón * Publicar *.\n"
+"Para publicar a un socio, establezca un *Nivel* en su formulario de contacto (en la sección Asignación de contacto) y haga clic en el botón *Publicar*.\n"
 "\n"
-"** Reenviar clientes potenciales **\n"
+"**Reenviar leads**\n"
 "\n"
-"El reenvío de clientes potenciales se puede realizar para uno o varios clientes potenciales a la vez. La acción está disponible en la sección * Socio asignado * de la vista del formulario de cliente potencial / oportunidad y en el menú * Acción * de la vista de lista.\n"
+"El reenvío de leads se puede realizar para uno o varios leads a la vez. La acción está disponible en la sección *Contacto asignado* de la vista del formulario de lead u oportunidad y en el menú *Acción* de la vista de lista.\n"
 "\n"
-"La asignación automática se calcula a partir del peso de los niveles de socios y la geolocalización. Los socios obtienen clientes potenciales que se encuentran a su alrededor.\n"
+"La asignación automática se calcula a partir de los niveles de socios y la geolocalización. Los socios reciben los leads que se encuentran cerca de ellos.\n"
 "\n"
 "    "
 
@@ -8947,8 +8950,8 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Este módulo presenta un nuevo bloque de construcción con una herramienta de lista de correo que se puede añadir en cualquier página de su web.\n"
-"Con un simple clic, tus visitantes pueden suscribirse a las listas de correo gestionadas en la aplicación marketing por email.\n"
+"Este módulo presenta un nuevo bloque de construcción con una herramienta de lista de correo que se puede agregar a cualquier página de su sitio web.\n"
+"Con un simple clic, sus visitantes pueden suscribirse a las listas de correo gestionadas en la aplicación Marketing por correo electrónico.\n"
 "    "
 
 #. module: base
@@ -9019,10 +9022,10 @@ msgid ""
 "The service is provided by the In App Purchase Odoo platform.\n"
 msgstr ""
 "\n"
-"Este módulo proporciona un marco para la mensajería instantánea de SMS\n"
+"Este módulo proporciona estructura para la mensajería instantánea de SMS\n"
 "----------------------------------------------------\n"
 "\n"
-"El servicio lo presta la plataforma de la aplicación de compras de Odoo.\n"
+"El servicio lo proporciona la plataforma de compras dentro de la aplicación de Odoo.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_contacts
@@ -9728,19 +9731,19 @@ msgstr ""
 "\n"
 "Vehículos, arrendamiento, seguros y costos\n"
 "==================================\n"
-"Este módulo de Odoo te ayudará a gestionar todos tus vehículos, los\n"
+"Este módulo de Odoo le ayudará a gestionar todos sus vehículos, los\n"
 "contratos a los que están asociados esos vehículos, así como como los servicios, costos\n"
-"y muchas otras funciones que son necesarias para gestionar tu flota\n"
-"de vehículo(s).\n"
+"y muchas otras funciones que son necesarias para gestionar su flota\n"
+"de vehículos.\n"
 "\n"
 "Características principales\n"
 "-------------\n"
-"* Agrega vehículos a tu flota\n"
-"* Gestiona los contratos de tus vehículos\n"
-"* Recordatorio cuando se acerca la fecha de conclusión de un contrato.\n"
-"* Agrega servicios y valores de odómetro para todos tus servicios\n"
-"* Muestra todos los costos asociados a un vehículo o a un tipo de servicio\n"
-"* Análisis en gráfica de los costos\n"
+"* Agregue vehículos a su flota\n"
+"* Gestione los contratos de sus vehículos\n"
+"* Reciba un recordatorio cuando se aproxime la fecha de conclusión de un contrato.\n"
+"* Agregue servicios y valores de kilometraje a todos sus vehículos\n"
+"* Muestre todos los costos asociados a un vehículo o a un tipo de servicio\n"
+"* Reciba un análisis gráfico de los costos\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_stock_account
@@ -10993,8 +10996,7 @@ msgstr "Un módulo para generar excepciones."
 #. module: base
 #: model:ir.module.module,description:base.module_test_lint
 msgid "A module to test Odoo code with various linters."
-msgstr ""
-"Un módulo para comprobar el código Odoo con varias comprobaciones de lint."
+msgstr "Un módulo para comprobar el código de Odoo con varios linters."
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_impex
@@ -11335,7 +11337,7 @@ msgstr "Seguridad de la cuenta"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_taxcloud
 msgid "Account TaxCloud"
-msgstr "Cuenta TaxCloud"
+msgstr "Cuenta de TaxCloud"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_sale_account_taxcloud
@@ -12199,7 +12201,7 @@ msgstr "Todo lo que necesita para la consolidación financiera"
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_holidays
 msgid "Allocate PTOs and follow leaves requests"
-msgstr "Asigne PTO y siga las peticiones de permisos"
+msgstr "Asigne tiempo personal y lleve un seguimiento de las solicitudes"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_helpdesk_fsm
@@ -12262,7 +12264,7 @@ msgid ""
 "(karma, badges, etc..)"
 msgstr ""
 "Permite entrar al perfil del sitio web de los usuarios para ver sus "
-"estadísticas (recompensas, insignias, etc.)"
+"estadísticas (karma, insignias, etc...)"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_slides_forum
@@ -12651,7 +12653,7 @@ msgstr "Argentina - Contabilidad"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ar_reports
 msgid "Argentinean Accounting Reports"
-msgstr "Reportes de contabilidad de Argentina"
+msgstr "Reportes contables de Argentina"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ar_edi
@@ -14743,6 +14745,12 @@ msgid "Compute"
 msgstr "Calcular"
 
 #. module: base
+#: code:addons/base/models/ir_model.py:0
+#, python-format
+msgid "Compute method cannot depend on field 'id'"
+msgstr "El método de cálculo no puede depender del campo 'id'"
+
+#. module: base
 #: model:ir.module.module,summary:base.module_sale_subscription_taxcloud
 msgid "Compute taxes with TaxCloud after automatic invoice creation."
 msgstr ""
@@ -15176,6 +15184,12 @@ msgstr "Grupos de países"
 #: model:ir.model.fields,field_description:base.field_res_country__name
 msgid "Country Name"
 msgstr "Nombre del país"
+
+#. module: base
+#: code:addons/base/models/res_country.py:0
+#, python-format
+msgid "Country code cannot be empty"
+msgstr "El código del país no puede estar vacío"
 
 #. module: base
 #: model:ir.model,name:base.model_res_country_state
@@ -17290,6 +17304,18 @@ msgstr "Error"
 #: model:ir.model.fields,help:base.field_ir_model_constraint__message
 msgid "Error message returned when the constraint is violated."
 msgstr "Mensaje de error que aparece cuando se viola la restricción."
+
+#. module: base
+#: code:addons/translate.py:0
+#, python-format
+msgid ""
+"Error while parsing view:\n"
+"\n"
+"%s"
+msgstr ""
+"Ocurrió un error al procesar la vista:\n"
+"\n"
+"%s"
 
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:0
@@ -20429,8 +20455,8 @@ msgstr "Versión instalada"
 #: model:ir.module.module,description:base.module_bus
 msgid "Instant Messaging Bus allow you to send messages to users, in live."
 msgstr ""
-"El canal de mensajería instantánea te permite enviar mensajes en vivo a las "
-"usuarios."
+"El canal de mensajería instantánea le permite enviar mensajes en tiempo real"
+" a los usuarios."
 
 #. module: base
 #: code:addons/models.py:0
@@ -20584,7 +20610,7 @@ msgstr "Internet de las cosas"
 #: model:ir.module.category,name:base.module_category_internet_of_things_(iot)
 #: model:ir.module.category,name:base.module_category_manufacturing_internet_of_things_(iot)
 msgid "Internet of Things (IoT)"
-msgstr "Internet de las cosas (IoT, por su sigla en inglés)"
+msgstr "Internet de las cosas (IoT)"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_cron__interval_number
@@ -20599,7 +20625,7 @@ msgstr "Unidad de intervalo"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_intrastat
 msgid "Intrastat Reports"
-msgstr "Informes Instrastat"
+msgstr "Reportes Intrastat"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.report_irmodulereference
@@ -20623,6 +20649,18 @@ msgstr ""
 #, python-format
 msgid "Invalid 'group by' parameter"
 msgstr "Parametro 'agrupar por' no valido"
+
+#. module: base
+#: code:addons/template_inheritance.py:0
+#, python-format
+msgid "Invalid Expression while parsing xpath %r"
+msgstr "Expresión no válida al procesar xpath %r"
+
+#. module: base
+#: code:addons/base/models/ir_default.py:0
+#, python-format
+msgid "Invalid JSON format in Default Value field."
+msgstr "Formato JSON no válido en el campo \"valor predeterminado\"."
 
 #. module: base
 #: code:addons/models.py:0
@@ -21124,8 +21162,8 @@ msgstr "LGPL versión 3"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_lt_reports
-msgid "LT - Accounting Reports"
-msgstr "LT - Informes contables"
+msgid "Lithuania - Accounting Reports"
+msgstr "Lituania - Reportes contables "
 
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:0
@@ -22233,7 +22271,7 @@ msgstr "Gestione cabinas de evento"
 #. module: base
 #: model:ir.module.module,summary:base.module_event_booth_sale
 msgid "Manage event booths sale"
-msgstr "Gestione la venta de cabinas de eventos"
+msgstr "Gestione la venta de estands de eventos"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_accountant
@@ -23040,7 +23078,7 @@ msgstr "Categoría de módulo"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.module_view_kanban
 msgid "Module Info"
-msgstr "Más información"
+msgstr "Información del módulo"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_module_module__shortdesc
@@ -26193,7 +26231,7 @@ msgstr "Operación:"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_crm
 msgid "Opportunity to Quotation"
-msgstr "Oportunidad a presupuesto"
+msgstr "Oportunidad de cotización"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_renting_crm
@@ -29743,6 +29781,18 @@ msgstr ""
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_ups
+msgid ""
+"This is the legacy integration with UPS that is no longer supported. Please "
+"install the new \"UPS Shipping\" module and uninstall this one as soon as "
+"possible. This integration will stop working in 2024."
+msgstr ""
+"Esta es la integración de sistemas heredados con UPS que ya no es "
+"compatible. Instale el nuevo modulo de \"UPS Shipping\" y desinstale este "
+"tan pronto como le sea posible. Esta integración dejará de funcionar en el "
+"2024. "
+
+#. module: base
+#: model:ir.module.module,summary:base.module_delivery_ups_rest
 msgid "Send your shippings through UPS and track them online"
 msgstr ""
 "Mande sus envíos a través de UPS y realice un seguimiento de ellos en línea"
@@ -30479,7 +30529,7 @@ msgstr "Estado"
 #: code:addons/base/static/src/js/res_config_settings.js:0
 #, python-format
 msgid "Stay Here"
-msgstr "Permanezca aquí"
+msgstr "Permanecer aquí"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_sequence__number_increment
@@ -31149,6 +31199,12 @@ msgstr "Tailandia - Contabilidad"
 #. module: base
 #: code:addons/base/models/res_users.py:0
 #, python-format
+msgid "The \"%s\" action cannot be selected as home action."
+msgstr "La acción \"%s\" no se puede seleccionar como acción de inicio. "
+
+#. module: base
+#: code:addons/base/models/res_users.py:0
+#, python-format
 msgid "The \"App Switcher\" action cannot be selected as home action."
 msgstr "La acción \"App Switcher\" no se puede seleccionar como acción de inicio."
 
@@ -31235,8 +31291,8 @@ msgstr ""
 #. module: base
 #: code:addons/base/models/ir_module.py:0
 #, python-format
-msgid "The `base` module cannot be uninstalled"
-msgstr "El módulo \"base\" no se puede desinstalar"
+msgid "Those modules cannot be uninstalled: %s"
+msgstr "Esos módulos no se pueden desinstalar: %s"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_partner_category__active
@@ -31256,6 +31312,16 @@ msgstr ""
 "estándar, incluso si éstas se redactaron después de los presentes términos y"
 " condiciones estándar de venta. Para que sea válida, cualquier derogación "
 "debe ser acordada expresamente por escrito y con antelación."
+
+#. module: base
+#: code:addons/base/models/res_currency.py:0
+#, python-format
+msgid ""
+"The name for the current rate is empty.\n"
+"Please set it."
+msgstr ""
+"El nombre de la tasa actual está vacío.\n"
+"Establezca uno."
 
 #. module: base
 #: model:ir.model.constraint,message:base.constraint_res_country_code_uniq
@@ -31305,7 +31371,6 @@ msgstr "¡El código de moneda debe ser único!"
 #. module: base
 #: model:ir.model.fields,help:base.field_res_currency__inverse_rate
 #: model:ir.model.fields,help:base.field_res_currency_rate__company_rate
-#: model:ir.model.fields,help:base.field_res_currency_rate__inverse_company_rate
 msgid "The currency of rate 1 to the rate of the currency."
 msgstr "La moneda del tipo 1 al tipo de la moneda."
 
@@ -31600,8 +31665,9 @@ msgstr ""
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_currency_rate__rate
-msgid "The rate of the currency to the currency of rate 1"
-msgstr "La tasa de cambio de la moneda respecto a la moneda de tasa 1"
+#: model:ir.model.fields,help:base.field_res_currency_rate__inverse_company_rate
+msgid "The rate of the currency to the currency of rate 1 "
+msgstr "La tasa de cambio de la moneda respecto a la moneda de tasa 1."
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_currency__rate
@@ -32759,6 +32825,11 @@ msgstr "Código UNSPSC de productos"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_delivery_ups
+msgid "UPS Shipping (Legacy)"
+msgstr "UPS Shipping (sistema heredado)"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_delivery_ups_rest
 msgid "UPS Shipping"
 msgstr "Envíos por UPS"
 
@@ -33922,7 +33993,7 @@ msgstr "Servicio de asistencia del sitio web"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_helpdesk_livechat
 msgid "Website IM Livechat Helpdesk"
-msgstr "Mesa de ayuda mediante el chat en vivo del sitio web"
+msgstr "Servicio de asistencia mediante el chat en vivo del sitio web"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_jitsi
@@ -33994,7 +34065,7 @@ msgstr "Tablero de ventas del sitio web"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_helpdesk_slides
 msgid "Website Slides Helpdesk"
-msgstr "Servicio de mesa de ayuda mediante presentaciones en el sitio web"
+msgstr "Servicio de asistencia mediante presentaciones en el sitio web"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_studio
@@ -34439,6 +34510,12 @@ msgid "You cannot deactivate the user you're currently logged in as."
 msgstr "No puede desactivar el usuario que está usando ahora mismo."
 
 #. module: base
+#: code:addons/base/models/res_users.py:0
+#, python-format
+msgid "You cannot delete a group linked with a settings field."
+msgstr "No puede eliminar un grupo vinculado con un campo de ajustes."
+
+#. module: base
 #: code:addons/base/models/res_partner.py:0
 #, python-format
 msgid ""
@@ -34467,6 +34544,12 @@ msgstr ""
 "Mejor debería archivarlos después de archivar al usuario vinculado.\n"
 "\n"
 "Usuarios vinculados activos: %(names)s"
+
+#. module: base
+#: code:addons/base/models/ir_config_parameter.py:0
+#, python-format
+msgid "You cannot delete the %s record."
+msgstr "No puede eliminar el registro %s."
 
 #. module: base
 #: code:addons/base/models/res_lang.py:0
@@ -34498,6 +34581,13 @@ msgid ""
 msgstr ""
 "No puede reducir el número de decimales de una divisa que ya se ha utilizado"
 " para realizar asientos contables."
+
+#. module: base
+#: code:addons/base/models/ir_config_parameter.py:0
+#, python-format
+msgid "You cannot rename config parameters with keys %s"
+msgstr ""
+"No puede cambiar el nombre de los parámetros de configuración con claves %s"
 
 #. module: base
 #: code:addons/models.py:0
@@ -35282,3 +35372,11 @@ msgstr "año"
 #: model:res.country,name:base.ax
 msgid "Åland Islands"
 msgstr "Islas Åland"
+
+#. module: base
+#: code:addons/base/models/res_currency.py:0
+#, python-format
+msgid "This currency is set on a company and therefore cannot be deactivated."
+msgstr ""
+"Esta divisa está establecida en una empresa por lo que no se puede "
+"desactivar."

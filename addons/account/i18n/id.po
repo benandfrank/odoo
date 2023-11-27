@@ -38,6 +38,7 @@
 # Danu S Pratomo, 2022
 # Muftiara Syuhada <muftiara.syuhada@gmail.com>, 2023
 # Martin Trigaux, 2023
+# Wil Odoo, 2023
 # Abe Manyo, 2023
 # 
 msgid ""
@@ -3558,13 +3559,13 @@ msgstr "Cash basis transition account"
 #: code:addons/account/models/account_bank_statement.py:0
 #, python-format
 msgid "Cash difference observed during the counting (Loss)"
-msgstr ""
+msgstr "Perbedaan kas yang ditemukan pada perhitungan (Rugi)"
 
 #. module: account
 #: code:addons/account/models/account_bank_statement.py:0
 #, python-format
 msgid "Cash difference observed during the counting (Profit)"
-msgstr ""
+msgstr "Perbedaan kas yang ditemukan pada perhitungan (Laba)"
 
 #. module: account
 #: code:addons/account/models/account_journal_dashboard.py:0
@@ -6531,7 +6532,7 @@ msgstr "Hash integrity result PDF"
 #: model:ir.model.fields,field_description:account.field_account_payment__hide_payment_method_line
 #: model:ir.model.fields,field_description:account.field_account_payment_register__hide_payment_method_line
 msgid "Hide Payment Method Line"
-msgstr ""
+msgstr "Sembunyikan Baris Metode Pembayaran"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__hide_tax_exigibility
@@ -10743,7 +10744,7 @@ msgstr "Impor QIF"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__qr_code
 msgid "QR Code"
-msgstr ""
+msgstr "Kode QR"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -12483,8 +12484,8 @@ msgstr "Tangguhkan AKun"
 
 #. module: account
 #: model:ir.actions.server,name:account.action_move_switch_invoice_to_credit_note
-msgid "Switch into refund/credit note"
-msgstr "Switch into refund/credit note"
+msgid "Switch into invoice/credit note"
+msgstr "Ganti menjadi faktur/nota kredit"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account_tag__name
@@ -13982,6 +13983,14 @@ msgid "The method used to determine if this line should be carried over."
 msgstr ""
 
 #. module: account
+#: code:addons/account/models/account_move.py:0
+#, python-format
+msgid ""
+"The move could not be posted for the following reason: %(error_message)s"
+msgstr ""
+"Pergerakkan tidak dapat diposting karena alasan berikut: %(error_message)s"
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__move_id
 msgid "The move of this entry line."
 msgstr "Pergerakan dari baris entri ini."
@@ -14853,7 +14862,7 @@ msgstr "Kepada"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_journal
 msgid "To :"
-msgstr ""
+msgstr "Untuk :"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__to_check
@@ -15616,7 +15625,7 @@ msgstr "Peringatan untuk %s"
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "Warning for Cash Rounding Method: %s"
-msgstr ""
+msgstr "Peringatan untuk Metode Pembulatan Kas: %s"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.partner_view_buttons
@@ -16146,6 +16155,9 @@ msgid ""
 "You cannot delete this entry, as it has already consumed a sequence number "
 "and is not the last one in the chain. You should probably revert it instead."
 msgstr ""
+"Anda tidak dapat menghapus entri ini, karena sudah menggunakan nomor "
+"sequence dan bukan merupakan yang terakhir di rantai. Anda sebaiknya "
+"mengembalikkan hal tersebut terlebih dahulu."
 
 #. module: account
 #: code:addons/account/models/res_config_settings.py:0
@@ -16349,6 +16361,12 @@ msgstr ""
 "reconciliations are still pending."
 
 #. module: account
+#: code:addons/account/models/account_account.py:0
+#, python-format
+msgid "You cannot switch the type of a posted document."
+msgstr "Anda tidak dapat mengganti tipe dari dokumen yang sudah di-post."
+
+#. module: account
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "You cannot use a deprecated account."
@@ -16438,7 +16456,7 @@ msgstr ""
 #: code:addons/account/models/account_move.py:0
 #, python-format
 msgid "You must specify the Profit Account (company dependent)"
-msgstr ""
+msgstr "Anda harus menentukan Profit Account (company dependent)"
 
 #. module: account
 #: code:addons/account/models/account_move.py:0

@@ -1214,6 +1214,40 @@ exports.PosModel = Backbone.Model.extend({
         });
     },
 
+    // To be used in the context of closing the POS
+    // Saves the order locally and try to send it to the backend.
+    // If there is an error show a popup and ask to continue the closing or not
+    // return a successful promise on sync or if user decides to contine else reject
+    push_orders_with_closing_popup: async function (order, opts) {
+        try {
+            return await this.push_orders(order, opts);
+        } catch (error) {
+            console.warn(error);
+            const reason = this.get('failed')
+                ? this.env._t(
+                      'Some orders could not be submitted to ' +
+                          'the server due to configuration errors. ' +
+                          'You can exit the Point of Sale, but do ' +
+                          'not close the session before the issue ' +
+                          'has been resolved.'
+                  )
+                : this.env._t(
+                      'Some orders could not be submitted to ' +
+                          'the server due to internet connection issues. ' +
+                          'You can exit the Point of Sale, but do ' +
+                          'not close the session before the issue ' +
+                          'has been resolved.'
+                  );
+            const { confirmed } =  await Gui.showPopup('ConfirmPopup', {
+                title: this.env._t('Offline Orders'),
+                body: reason,
+                confirmText: this.env._t('Close anyway'),
+                cancelText: this.env._t('Do not close'),
+            });
+            return confirmed ? Promise.resolve(true) : Promise.reject();
+        }
+    },
+
     // saves the order locally and try to send it to the backend.
     // it returns a promise that succeeds after having tried to send the order and all the other pending orders.
     push_orders: function (order, opts) {
@@ -1313,12 +1347,53 @@ exports.PosModel = Backbone.Model.extend({
                 self.validated_orders_name_server_id_map[server_ids[i].pos_reference] = server_ids[i].id;
             }
             return _.pluck(server_ids, 'id');
-        }).catch(function(error){
-            self.set_synch(self.get('failed') ? 'error' : 'disconnected');
-            throw error;
+        }).catch(function(error) {
+            if (self._isRPCError(error)) {
+                if (orders.length > 1) {
+                    return self._flush_orders_retry(orders, options);
+                } else {
+                    self.set_synch('error');
+                    throw error;
+                }
+            } else {
+                self.set_synch('disconnected');
+                throw error;
+            }
         }).finally(function() {
             self._after_flush_orders(orders);
         });
+    },
+    // Attempts to send the orders to the server one by one if an RPC error is encountered.
+    _flush_orders_retry: async function(orders, options) {
+
+        let successfulOrders = 0;
+        let lastError;
+        let serverIds = [];
+
+        for (let order of orders) {
+            try {
+                let server_ids = await this._save_to_server([order], options);
+                successfulOrders++;
+                this.validated_orders_name_server_id_map[server_ids[0].pos_reference] = server_ids[0].id;
+                serverIds.push(server_ids[0].id);
+            } catch (err) {
+                lastError = err;
+            }
+        }
+
+        if (successfulOrders === orders.length) {
+            this.set_synch('connected');
+            return serverIds;
+        }
+        if (this._isRPCError(lastError)) {
+            this.set_synch('error');
+        } else {
+            this.set_synch('disconnected');
+        }
+        throw lastError;
+    },
+    _isRPCError: function (error) {
+        return error.message && error.message.name === 'RPC_ERROR';
     },
     /**
      * Hook method after _flush_orders resolved or rejected.
@@ -2535,6 +2610,7 @@ exports.Orderline = Backbone.Model.extend({
             product_description_sale: this.get_product().description_sale,
             pack_lot_lines:      this.get_lot_lines(),
             customer_note:      this.get_customer_note(),
+            unitDisplayPriceBeforeDiscount: this.getUnitDisplayPriceBeforeDiscount(),
         };
     },
     generate_wrapped_product_name: function() {
@@ -2751,7 +2827,7 @@ exports.Orderline = Backbone.Model.extend({
         };
     },
     display_discount_policy: function(){
-        return this.order.pricelist.discount_policy;
+        return this.order.pricelist ? this.order.pricelist.discount_policy : "with_discount";
     },
     compute_fixed_price: function (price) {
         return this.pos.computePriceAfterFp(price, this.get_taxes());
@@ -2973,7 +3049,7 @@ exports.Paymentline = Backbone.Model.extend({
             payment_method_id: this.payment_method.id,
             amount: this.get_amount(),
             payment_status: this.payment_status,
-            can_be_reversed: this.can_be_resersed,
+            can_be_reversed: this.can_be_reversed,
             ticket: this.ticket,
             card_type: this.card_type,
             cardholder_name: this.cardholder_name,
@@ -3110,6 +3186,7 @@ exports.Order = Backbone.Model.extend({
             if (fiscal_position) {
                 this.fiscal_position = fiscal_position;
             } else {
+                this.fiscal_position_not_found = true;
                 console.error('ERROR: trying to load a fiscal position not available in the pos');
             }
         }

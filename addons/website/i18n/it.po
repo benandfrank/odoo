@@ -12,8 +12,9 @@
 # Friederike Fasterling-Nesselbosch, 2022
 # Martin Trigaux, 2022
 # Sebastiano Picchi, 2023
-# Marianna Ciofani, 2023
+# Wil Odoo, 2023
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -21,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-10 06:07+0000\n"
 "PO-Revision-Date: 2021-09-14 12:27+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -777,6 +778,8 @@ msgid ""
 "<i class=\"fa fa-arrow-right\"/>\n"
 "                                            How to get my Measurement ID"
 msgstr ""
+"<i class=\"fa fa-arrow-right\"/>\n"
+"                                        Come ottenere il mio ID misurazione"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.report_viewhierarchy_children
@@ -2562,7 +2565,7 @@ msgstr "CTA"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page__cache_key_expr
 msgid "Cache Key Expr"
-msgstr ""
+msgstr "Espressione chiave cache"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page__cache_time
@@ -5052,6 +5055,11 @@ msgid ""
 "will be possible only up to mid 2023. After that, those services won't work "
 "anymore, at all."
 msgstr ""
+"Google ha disattivato entrambe le API \"Universal Analytics\" e \"Google "
+"Sign-In\". Ciò significa che l'integrazione della bacheca di Analytics in "
+"Odoo (o in qualsiasi altro sito web) sarà possibile solo per gli acccount e "
+"le chiavi creati prima del 2020 e solo fino alla metà del 2023. Dopo di che,"
+" questi servizi non funzioneranno più."
 
 #. module: website
 #: model:ir.model.fields,help:website.field_res_config_settings__google_search_console
@@ -7105,6 +7113,8 @@ msgid ""
 "New Google Analytics accounts and keys are now using Google Analytics 4 "
 "which, for now, can't be integrated/embed in external websites."
 msgstr ""
+"I nuovi account e e le nuove chiavi utilizzano Google Analytics 4 il quale, "
+"per ora, non può essere integrato/incorporato in siti web esterni."
 
 #. module: website
 #. openerp-web
@@ -7804,6 +7814,13 @@ msgid "Pay"
 msgstr "Paga"
 
 #. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Phone Number"
+msgstr "Numero di telefono"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_thumbnails
 msgid "Phones"
 msgstr "Telefoni"
@@ -7914,7 +7931,7 @@ msgstr "Preimpostazioni"
 #: code:addons/website/static/src/xml/website.xml:0
 #, python-format
 msgid "Press"
-msgstr ""
+msgstr "Premi"
 
 #. module: website
 #. openerp-web
@@ -9285,6 +9302,13 @@ msgid "Sub Menus"
 msgstr "Sottomenù"
 
 #. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Subject"
+msgstr "Oggetto"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.contactus
 #: model_terms:ir.ui.view,arch_db:website.s_website_form
 #: model_terms:website.page,arch_db:website.contactus_page
@@ -9957,6 +9981,8 @@ msgid ""
 "Those accounts should now check their Analytics dashboard in the Google "
 "platform directly."
 msgstr ""
+"Tali account dovrebbero ora controllare la loro bacheca di Analytics "
+"direttamente nella piattaforma Google."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_image_gallery_options
@@ -11491,6 +11517,13 @@ msgid "Your Client ID:"
 msgstr "ID cliente:"
 
 #. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Your Company"
+msgstr "La tua azienda"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_dynamic_snippet_template
 msgid ""
 "Your Dynamic Snippet will be displayed here... This message is displayed "
@@ -11501,10 +11534,31 @@ msgstr ""
 
 #. module: website
 #. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Your Email"
+msgstr "E-mail"
+
+#. module: website
+#. openerp-web
 #: code:addons/website/static/src/xml/website.backend.xml:0
 #, python-format
 msgid "Your Measurement ID:"
 msgstr ""
+
+#. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Your Name"
+msgstr "Nome"
+
+#. module: website
+#. openerp-web
+#: code:addons/website/static/src/js/form_editor_registry.js:0
+#, python-format
+msgid "Your Question"
+msgstr "La tua domanda"
 
 #. module: website
 #. openerp-web

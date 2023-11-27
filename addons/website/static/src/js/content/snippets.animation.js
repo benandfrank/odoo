@@ -452,6 +452,15 @@ registry.slider = publicWidget.Widget.extend({
         // Initialize carousel and pause if in edit mode.
         this.$target.carousel(this.editableMode ? 'pause' : undefined);
         $(window).on('resize.slider', _.debounce(() => this._computeHeights(), 250));
+        if (this.editableMode) {
+            // Prevent carousel slide to be an history step.
+            this.$target.on('slide.bs.carousel', () => {
+                this.options.wysiwyg.odooEditor.observerUnactive();
+            });
+            this.$target.on('slid.bs.carousel', () => {
+                this.options.wysiwyg.odooEditor.observerActive();
+            });
+        }
         return this._super.apply(this, arguments);
     },
     /**
@@ -466,6 +475,7 @@ registry.slider = publicWidget.Widget.extend({
             $(el).css('min-height', '');
         });
         $(window).off('.slider');
+        this.$target.off('.carousel');
     },
 
     //--------------------------------------------------------------------------
@@ -985,6 +995,9 @@ registry.anchorSlide = publicWidget.Widget.extend({
      * @private
      */
     _onAnimateClick: function (ev) {
+        if (this.$target[0].pathname !== window.location.pathname) {
+            return;
+        }
         var hash = this.$target[0].hash;
         if (hash === '#top' || hash === '#bottom') {
             // If the anchor targets #top or #bottom, directly call the

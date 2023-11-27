@@ -786,7 +786,7 @@ msgstr "일정, 트랙, 트랙 제안서 양식으로 행사 웹 페이지에 �
 #. module: event
 #: model_terms:ir.ui.view,arch_db:event.view_event_form
 msgid "Add a note..."
-msgstr ""
+msgstr "메모 추가"
 
 #. module: event
 #: model:res.groups,name:event.group_event_manager
@@ -3048,6 +3048,13 @@ msgstr ""
 #, python-format
 msgid "The stop date cannot be earlier than the start date."
 msgstr ""
+
+#. module: event
+#: code:addons/event/models/event_mail.py:0
+#, python-format
+msgid ""
+"The template which is referenced should be coming from %(model_name)s model."
+msgstr "참조할 서식은 %(model_name)s 모델에서 가져와야 합니다."
 
 #. module: event
 #: model_terms:event.event,description:event.event_0

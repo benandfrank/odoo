@@ -67,7 +67,7 @@ odoo.define('point_of_sale.ClosePosPopup', function(require) {
         handleInputChange(paymentId, event) {
             if (event.target.classList.contains('invalid-cash-input')) return;
             let expectedAmount;
-            if (paymentId === this.defaultCashDetails.id) {
+            if (this.defaultCashDetails && paymentId === this.defaultCashDetails.id) {
                 this.manualInputCashCount = true;
                 this.state.notes = '';
                 expectedAmount = this.defaultCashDetails.amount;
@@ -116,6 +116,8 @@ odoo.define('point_of_sale.ClosePosPopup', function(require) {
             if (this.canCloseSession() && !this.closeSessionClicked) {
                 this.closeSessionClicked = true;
                 let response;
+                // If there are orders in the db left unsynced, we try to sync.
+                await this.env.pos.push_orders_with_closing_popup();
                 if (this.cashControl) {
                      response = await this.rpc({
                         model: 'pos.session',

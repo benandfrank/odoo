@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2021
+# Wil Odoo, 2023
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -159,6 +160,16 @@ msgstr "<i class=\"fa fa-print\"/> طباعة"
 #: model_terms:ir.ui.view,arch_db:website_sale.product
 msgid "<i class=\"fa fa-shopping-cart mr-2\"/>ADD TO CART"
 msgstr "<i class=\"fa fa-shopping-cart mr-2\"/>إضافة إلى عربة التسوق "
+
+#. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.address
+msgid "<option value=\"\">Country...</option>"
+msgstr "<option value=\"\">الدولة...</option>"
+
+#. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.address
+msgid "<option value=\"\">State / Province...</option>"
+msgstr "<option value=\"\">الولاية / المنطقة...</option>"
 
 #. module: website_sale
 #: code:addons/website_sale/models/crm_team.py:0
@@ -1061,6 +1072,16 @@ msgstr ""
 "التواصل معنا مباشرة لإتمام هذه العملية. "
 
 #. module: website_sale
+#: code:addons/website_sale/controllers/main.py:0
+#, python-format
+msgid ""
+"Changing your name is not allowed once documents have been issued for your "
+"account. Please contact us directly for this operation."
+msgstr ""
+"لا يسمح بتغيير اسمك بمجرد أن يتم إصدار مستندات لحسابك. يرجى التواصل معنا "
+"مباشرة لإتمام هذه العملية. "
+
+#. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_public_category__child_id
 msgid "Children Categories"
 msgstr "الفئات التابعة"
@@ -1127,7 +1148,10 @@ msgid "Companies"
 msgstr "الشركات "
 
 #. module: website_sale
+#. openerp-web
+#: code:addons/website_sale/static/src/js/website_sale_form_editor.js:0
 #: model_terms:ir.ui.view,arch_db:website_sale.address_b2b
+#, python-format
 msgid "Company Name"
 msgstr "اسم الشركة "
 
@@ -1222,11 +1246,6 @@ msgstr "كنبات "
 #: model_terms:ir.ui.view,arch_db:website_sale.address
 msgid "Country"
 msgstr "الدولة"
-
-#. module: website_sale
-#: model_terms:ir.ui.view,arch_db:website_sale.address
-msgid "Country..."
-msgstr "الدولة..."
 
 #. module: website_sale
 #: model_terms:ir.actions.act_window,help:website_sale.product_template_action_website
@@ -2310,6 +2329,13 @@ msgid "Phone"
 msgstr "رقم الهاتف"
 
 #. module: website_sale
+#. openerp-web
+#: code:addons/website_sale/static/src/js/website_sale_form_editor.js:0
+#, python-format
+msgid "Phone Number"
+msgstr "رقم الهاتف"
+
+#. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.view_product_image_form
 msgid "Please enter a valid Video URL."
 msgstr "يرجى إدخال رابط URL صالح للفيديو. "
@@ -3058,11 +3084,6 @@ msgid "State / Province"
 msgstr "الولاية/المنطقة"
 
 #. module: website_sale
-#: model_terms:ir.ui.view,arch_db:website_sale.address
-msgid "State / Province..."
-msgstr "الولاية/المنطقة..."
-
-#. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_res_company__website_sale_onboarding_payment_acquirer_state
 msgid "State of the website sale onboarding payment acquirer step"
 msgstr "حالة خطوة بوابة الدفع التمهيدية لمبيعات الموقع الإلكتروني "
@@ -3125,8 +3146,8 @@ msgstr "الملحقات المقترحة في عربة التجارة الإل�
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.address_b2b
-msgid "TIN / VAT"
-msgstr "الرقم التعريفي لدافع الضرائب/ضريبة القيمة المضافة"
+msgid "VAT"
+msgstr "ضريبة القيمة المضافة"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
@@ -3668,6 +3689,20 @@ msgid ""
 msgstr ""
 "عنوانك\n"
 "                                        <small> أو </small>"
+
+#. module: website_sale
+#. openerp-web
+#: code:addons/website_sale/static/src/js/website_sale_form_editor.js:0
+#, python-format
+msgid "Your Email"
+msgstr "بريدك الإلكتروني "
+
+#. module: website_sale
+#. openerp-web
+#: code:addons/website_sale/static/src/js/website_sale_form_editor.js:0
+#, python-format
+msgid "Your Name"
+msgstr "اسمك"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.cart_lines
