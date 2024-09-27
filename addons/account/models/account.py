@@ -972,7 +972,9 @@ class AccountTax(models.Model):
     @api.multi
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
-        default = dict(default or {}, name=_("%s (Copy)") % self.name)
+        default = dict(default or {})
+        if 'name' not in default:
+            default['name'] = _("%s (Copy)") % self.name
         return super(AccountTax, self).copy(default=default)
 
     def name_get(self):
@@ -1018,7 +1020,7 @@ class AccountTax(models.Model):
 
     @api.onchange('amount_type')
     def onchange_amount_type(self):
-        if self.amount_type is not 'group':
+        if self.amount_type != 'group':
             self.children_tax_ids = [(5,)]
         if self.amount_type == 'group':
             self.description = None
